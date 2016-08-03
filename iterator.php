@@ -53,18 +53,55 @@ foreach ($worksheet->getRowIterator(2) as $row) {
         'subChapterName' => $worksheet->getCellByColumnAndRow(6, $row->getRowIndex())->getValue(),
 //        'difficultyLevel' => $worksheet->getCellByColumnAndRow(10, $row->getRowIndex())->getValue(),
         'number' => (int)$worksheet->getCellByColumnAndRow(8, $row->getRowIndex())->getValue(),
-        'albertDifficultyLevel' => $worksheet->getCellByColumnAndRow(11, $row->getRowIndex())->getValue(),
-        'numberAndVariant' => $worksheet->getCellByColumnAndRow(12, $row->getRowIndex())->getOldCalculatedValue(),
+//        'albertDifficultyLevel' => $worksheet->getCellByColumnAndRow(11, $row->getRowIndex())->getValue(),
+//        'numberAndVariant' => $worksheet->getCellByColumnAndRow(12, $row->getRowIndex())->getOldCalculatedValue(),
 //        'globalId' => $worksheet->getCellByColumnAndRow(13, $row->getRowIndex())->getValue(),
         'exerciseText' => $worksheet->getCellByColumnAndRow(16, $row->getRowIndex())->getOldCalculatedValue(),
-//        'lessonId' => $worksheet->getCellByColumnAndRow(18, $row->getRowIndex())->getValue(),
-//        'lessonName' => $worksheet->getCellByColumnAndRow(20, $row->getRowIndex())->getOldCalculatedValue(),
-        'lesson' => [
-            'id' => $worksheet->getCellByColumnAndRow(18, $row->getRowIndex())->getValue(),
-            'name' => $worksheet->getCellByColumnAndRow(20, $row->getRowIndex())->getOldCalculatedValue(),
-        ],
+        'lessonId' => $worksheet->getCellByColumnAndRow(18, $row->getRowIndex())->getValue(),
+        'lessonName' => $worksheet->getCellByColumnAndRow(20, $row->getRowIndex())->getOldCalculatedValue(),
+//        'lesson' => [
+//            'id' => $worksheet->getCellByColumnAndRow(18, $row->getRowIndex())->getValue(),
+//            'name' => $worksheet->getCellByColumnAndRow(20, $row->getRowIndex())->getOldCalculatedValue(),
+//        ],
 
     ];
 }
 
-var_dump($exercises);
+//var_dump($exercises);
+
+$clientBuilder = Elasticsearch\ClientBuilder::create();
+$clientBuilder->setHosts([
+    'http://localhost:9200/'
+]);
+$client = $clientBuilder->build();
+
+//$params = [
+//    'index' => 'my_index',
+//    'type' => 'my_type',
+//    'id' => 'my_id',
+//    'body' => [ 'testField' => 'abc']
+//];
+//
+//// Document will be indexed to my_index/my_type/my_id
+//$response = $client->index($params);
+//var_dump($response);
+
+$params = [];
+for($i = 200; $i < 210; $i++) {
+    $params['body'][] = [
+        'index' => [
+            '_index' => 'my_index2',
+            '_type' => 'my_type2',
+        ]
+    ];
+
+    $params['body'][] = [
+        'my_field' => 'my_value_' . $i,
+        'second_field' => 'some more values = ' . $i
+    ];
+}
+
+//xdebug_var_dump($params); die;
+
+$responses = $client->bulk($params);
+var_dump($responses);
