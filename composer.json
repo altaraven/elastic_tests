@@ -1,0 +1,21 @@
+{
+    "name": "mralbert",
+    "description": "mralbert Project",
+    "homepage": "http://www.yiiframework.com/",
+    "type": "project",
+    "license": "BSD-3-Clause",
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.5.0",
+        "guzzlehttp/guzzle": "*",
+        "elasticsearch/elasticsearch": "2.2.1"
+    },
+    "config": {
+        "process-timeout": 1800
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "yii\\composer\\Installer::postCreateProject"
+        ]
+    }
+}
