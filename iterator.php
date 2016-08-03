@@ -42,15 +42,29 @@ try {
 }
 
 // set worksheet
-//
+
 $worksheet = $excel->setActiveSheetIndex(0);
 
-// skip first "header" row by adding argument 2 to getRowIterator
-//
+$exercises = [];
 foreach ($worksheet->getRowIterator(2) as $row) {
-    $one = $worksheet->getCellByColumnAndRow(0, $row->getRowIndex())->getValue();
-    $two = $worksheet->getCellByColumnAndRow(1, $row->getRowIndex())->getValue();
-    var_dump($one);
-    var_dump($two);
-//    ...
+    $exercises[] = [
+        'id' => $worksheet->getCellByColumnAndRow(13, $row->getRowIndex())->getOldCalculatedValue(),
+        'chapterName' => $worksheet->getCellByColumnAndRow(2, $row->getRowIndex())->getValue(),
+        'subChapterName' => $worksheet->getCellByColumnAndRow(6, $row->getRowIndex())->getValue(),
+//        'difficultyLevel' => $worksheet->getCellByColumnAndRow(10, $row->getRowIndex())->getValue(),
+        'number' => (int)$worksheet->getCellByColumnAndRow(8, $row->getRowIndex())->getValue(),
+        'albertDifficultyLevel' => $worksheet->getCellByColumnAndRow(11, $row->getRowIndex())->getValue(),
+        'numberAndVariant' => $worksheet->getCellByColumnAndRow(12, $row->getRowIndex())->getOldCalculatedValue(),
+//        'globalId' => $worksheet->getCellByColumnAndRow(13, $row->getRowIndex())->getValue(),
+        'exerciseText' => $worksheet->getCellByColumnAndRow(16, $row->getRowIndex())->getOldCalculatedValue(),
+//        'lessonId' => $worksheet->getCellByColumnAndRow(18, $row->getRowIndex())->getValue(),
+//        'lessonName' => $worksheet->getCellByColumnAndRow(20, $row->getRowIndex())->getOldCalculatedValue(),
+        'lesson' => [
+            'id' => $worksheet->getCellByColumnAndRow(18, $row->getRowIndex())->getValue(),
+            'name' => $worksheet->getCellByColumnAndRow(20, $row->getRowIndex())->getOldCalculatedValue(),
+        ],
+
+    ];
 }
+
+var_dump($exercises);
