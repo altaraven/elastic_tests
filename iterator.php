@@ -67,11 +67,15 @@ foreach ($worksheet->getRowIterator(2) as $row) {
 
     $exercises['body'][] = [
 //        'id' => $worksheet->getCellByColumnAndRow(13, $row->getRowIndex())->getOldCalculatedValue(),
+        'chapterNumber' => 'Kapitel ' .  $worksheet->getCellByColumnAndRow(1, $row->getRowIndex())->getValue(),
         'chapterName' => $worksheet->getCellByColumnAndRow(2, $row->getRowIndex())->getValue(),
         'subChapterName' => $worksheet->getCellByColumnAndRow(6, $row->getRowIndex())->getValue(),
         'number' => $number,
         'variant' => $variant,
         'numberVariant' => $number . $variant,
+        'exerciseNumberVariant1' => 'tal ' .  $number . ' ' . $variant,
+        'exerciseNumberVariant2' => 'uppgift ' .  $number . ' ' . $variant,
+        'exerciseNumberVariant3' => 'övning ' .  $number . ' ' . $variant,
         'exerciseText' => $worksheet->getCellByColumnAndRow(16, $row->getRowIndex())->getOldCalculatedValue(),
         'lessonId' => $worksheet->getCellByColumnAndRow(18, $row->getRowIndex())->getValue(),
         'lessonName' => $worksheet->getCellByColumnAndRow(20, $row->getRowIndex())->getOldCalculatedValue(),
@@ -105,17 +109,20 @@ foreach ($worksheet->getRowIterator(2) as $row) {
 $responses = $client->bulk($exercises);
 var_dump($responses);
 
-//http://localhost:9200/mralbert/exercises4/_search
-//{
-//    "sort": {
-//    "chapterName": "asc",
-//      "subChapterName": "asc",
-//      "number": "asc",
-//      "variant": "asc"
-//    },
-//  "query": {
-//    "match": {
-//        "_all": "Grundkurs"
-//    }
-//  }
-//}
+/*
+http://localhost:9200/mralbert/exercises4/_search
+{
+  "sort": {
+      "_score": "desc",
+      "chapterName": "asc",
+      "subChapterName": "asc",
+      "number": "asc",
+      "variant": "asc"
+    },
+  "query": {
+    "match": {
+      "_all": "15b Tal Grundkurs"
+    }
+  }
+}
+*/
