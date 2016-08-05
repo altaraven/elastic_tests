@@ -3,7 +3,7 @@ date_default_timezone_set('Europe/Kiev');
 
 require(__DIR__ . '/vendor/autoload.php');
 
-$indexName = 'mralbert_swedish';
+$indexName = 'mralbert_swedish4';
 $typeName = 'exercises';
 
 $clientBuilder = Elasticsearch\ClientBuilder::create();
@@ -17,32 +17,40 @@ $params = [
     'body' => [
         'settings' => [
             'analysis' => [
-                'filter' => [
-                    'swedish_stop' => [
-                        'type' => 'stop',
-                        'stopwords' => '_swedish_'
-                    ],
-//                    'swedish_keywords' => [
-//                        'type' => 'keyword_marker',
-//                        'keywords' => []
-//                    ],
-                    'swedish_stemmer' => [
-                        'type' => 'stemmer',
-                        'language' => 'swedish'
-                    ]
-                ],
                 'analyzer' => [
-                    'swedish' => [
-                        'tokenizer' => 'standard',
-                        'filter' => [
-                            'lowercase',
-                            'swedish_stop',
-//                            'swedish_keywords',
-                            'swedish_stemmer'
-                        ]
+                    'my_analyzer' => [
+                        'type' => 'snowball',
+                        'language' => 'Swedish'
                     ]
                 ]
             ],
+//            'analysis' => [
+//                'filter' => [
+//                    'swedish_stop' => [
+//                        'type' => 'stop',
+//                        'stopwords' => '_swedish_'
+//                    ],
+////                    'swedish_keywords' => [
+////                        'type' => 'keyword_marker',
+////                        'keywords' => []
+////                    ],
+//                    'swedish_stemmer' => [
+//                        'type' => 'stemmer',
+//                        'language' => 'swedish'
+//                    ]
+//                ],
+//                'analyzer' => [
+//                    'swedish' => [
+//                        'tokenizer' => 'standard',
+//                        'filter' => [
+//                            'lowercase',
+//                            'swedish_stop',
+////                            'swedish_keywords',
+//                            'swedish_stemmer'
+//                        ]
+//                    ]
+//                ]
+//            ],
         ],
         'mappings' => [
             $typeName => [
@@ -51,10 +59,14 @@ $params = [
                         'type' => 'string'
                     ],
                     'chapterName' => [
-                        'type' => 'string'
+                        'type' => 'string',
+//                        'index' => 'analyzed'
+                        'analyzer' => 'my_analyzer'
                     ],
                     'exerciseText' => [
-                        'type' => 'string'
+                        'type' => 'string',
+//                        'index' => 'analyzed'
+                        'analyzer' => 'my_analyzer'
                     ],
                     'lessonId' => [
                         'type' => 'string'
@@ -83,7 +95,9 @@ $params = [
                         'boost' => 2
                     ],
                     'subChapterName' => [
-                        'type' => 'string'
+                        'type' => 'string',
+//                        'index' => 'analyzed'
+                        'analyzer' => 'my_analyzer'
                     ],
                     'variant' => [
                         'type' => 'string',

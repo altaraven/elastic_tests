@@ -12,7 +12,7 @@ $client = $clientBuilder->build();
 $filePath = __DIR__ . '/data/sample1.xlsx';
 //$filePath = __DIR__ . '/data/160623-PRODUCTION-Matte Direkt 9.xlsx';
 
-$indexName = 'mralbert_swedish';
+$indexName = 'mralbert_swedish4';
 $typeName = 'exercises';
 
 try {
@@ -64,24 +64,26 @@ foreach ($worksheet->getRowIterator(2) as $row) {
         'index' => [
             '_index' => $indexName,
             '_type' => $typeName,
-            '_id' => $worksheet->getCellByColumnAndRow(13, $row->getRowIndex())->getOldCalculatedValue()
+            '_id' => $worksheet->getCellByColumnAndRow(13, $row->getRowIndex())->getCalculatedValue()
         ]
     ];
 
+//    9789152302484-1-x1_1x-SF-1
+//    "exerciseText": null
     $exercises['body'][] = [
-//        'id' => $worksheet->getCellByColumnAndRow(13, $row->getRowIndex())->getOldCalculatedValue(),
+//        'id' => $worksheet->getCellByColumnAndRow(13, $row->getRowIndex())->getCalculatedValue(),
         'chapterNumber' => 'Kapitel ' .  $worksheet->getCellByColumnAndRow(1, $row->getRowIndex())->getValue(),
         'chapterName' => $worksheet->getCellByColumnAndRow(2, $row->getRowIndex())->getValue(),
         'subChapterName' => $worksheet->getCellByColumnAndRow(6, $row->getRowIndex())->getValue(),
         'number' => $number,
         'variant' => $variant,
         'numberVariant' => $number . $variant,
-        'exerciseNumberVariant1' => 'tal ' .  $number . ' ' . $variant,
-        'exerciseNumberVariant2' => 'uppgift ' .  $number . ' ' . $variant,
-        'exerciseNumberVariant3' => 'övning ' .  $number . ' ' . $variant,
-        'exerciseText' => $worksheet->getCellByColumnAndRow(16, $row->getRowIndex())->getOldCalculatedValue(),
+        'exerciseNumberVariant1' => $variant ? 'tal ' .  $number . ' ' . $variant : 'tal ' .  $number,
+        'exerciseNumberVariant2' => $variant ? 'uppgift ' .  $number . ' ' . $variant : 'tal ' .  $number,
+        'exerciseNumberVariant3' => $variant ? 'övning ' .  $number . ' ' . $variant : 'tal ' .  $number,
+        'exerciseText' => $worksheet->getCellByColumnAndRow(16, $row->getRowIndex())->getCalculatedValue(),
         'lessonId' => $worksheet->getCellByColumnAndRow(18, $row->getRowIndex())->getValue(),
-        'lessonName' => $worksheet->getCellByColumnAndRow(20, $row->getRowIndex())->getOldCalculatedValue(),
+        'lessonName' => $worksheet->getCellByColumnAndRow(20, $row->getRowIndex())->getCalculatedValue(),
     ];
 }
 
@@ -90,6 +92,24 @@ foreach ($worksheet->getRowIterator(2) as $row) {
 
 $responses = $client->bulk($exercises);
 var_dump($responses);
+
+/*
+{
+  "sort": {
+      "_score": "desc",
+      "chapterName": "asc",
+      "subChapterName": "asc",
+      "number": "asc",
+      "variant": "asc"
+    },
+  "query": {
+    "multi_match": {
+      "query": "Kapitelen 1",
+      "fields" : [ "chapterNumber", "chapterName", "subChapterName", "numberVariant", "exerciseNumberVariant*", "exerciseText" ]
+    }
+  }
+}
+*/
 
 /*
 http://localhost:9200/mralbert/exercises4/_search
