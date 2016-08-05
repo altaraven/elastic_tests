@@ -9,10 +9,10 @@ $clientBuilder->setHosts([
 ]);
 $client = $clientBuilder->build();
 
-$filePath = __DIR__ . '/data/sample1.xlsx';
+$filePath = __DIR__ . '/data/sample2.xlsx';
 //$filePath = __DIR__ . '/data/160623-PRODUCTION-Matte Direkt 9.xlsx';
 
-$indexName = 'mralbert_swedish4';
+$indexName = 'mralbert_swedish_full';
 $typeName = 'exercises';
 
 try {
@@ -79,8 +79,8 @@ foreach ($worksheet->getRowIterator(2) as $row) {
         'variant' => $variant,
         'numberVariant' => $number . $variant,
         'exerciseNumberVariant1' => $variant ? 'tal ' .  $number . ' ' . $variant : 'tal ' .  $number,
-        'exerciseNumberVariant2' => $variant ? 'uppgift ' .  $number . ' ' . $variant : 'tal ' .  $number,
-        'exerciseNumberVariant3' => $variant ? 'övning ' .  $number . ' ' . $variant : 'tal ' .  $number,
+        'exerciseNumberVariant2' => $variant ? 'uppgift ' .  $number . ' ' . $variant : 'uppgift ' .  $number,
+        'exerciseNumberVariant3' => $variant ? 'övning ' .  $number . ' ' . $variant : 'övning ' .  $number,
         'exerciseText' => $worksheet->getCellByColumnAndRow(16, $row->getRowIndex())->getCalculatedValue(),
         'lessonId' => $worksheet->getCellByColumnAndRow(18, $row->getRowIndex())->getValue(),
         'lessonName' => $worksheet->getCellByColumnAndRow(20, $row->getRowIndex())->getCalculatedValue(),
@@ -91,7 +91,7 @@ foreach ($worksheet->getRowIterator(2) as $row) {
 
 
 $responses = $client->bulk($exercises);
-var_dump($responses);
+//var_dump($responses);
 
 /*
 {
