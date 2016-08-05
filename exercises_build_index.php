@@ -3,7 +3,7 @@ date_default_timezone_set('Europe/Kiev');
 
 require(__DIR__ . '/vendor/autoload.php');
 
-$indexName = 'mralbert_swedish_full';
+$indexName = 'mralbert_swedish_full_3';
 $typeName = 'exercises';
 
 $clientBuilder = Elasticsearch\ClientBuilder::create();
@@ -76,23 +76,23 @@ $params = [
                     ],
                     'number' => [
                         'type' => 'long',
-                        'boost' => 2
+//                        'boost' => 2
                     ],
                     'numberVariant' => [
                         'type' => 'string',
-                        'boost' => 3
+//                        'boost' => 3
                     ],
                     'exerciseNumberVariant1' => [
                         'type' => 'string',
-                        'boost' => 2
+//                        'boost' => 2
                     ],
                     'exerciseNumberVariant2' => [
                         'type' => 'string',
-                        'boost' => 2
+//                        'boost' => 2
                     ],
                     'exerciseNumberVariant3' => [
                         'type' => 'string',
-                        'boost' => 2
+//                        'boost' => 2
                     ],
                     'subChapterName' => [
                         'type' => 'string',
@@ -101,7 +101,7 @@ $params = [
                     ],
                     'variant' => [
                         'type' => 'string',
-                        'boost' => 2
+//                        'boost' => 2
                     ]
                 ]
             ]

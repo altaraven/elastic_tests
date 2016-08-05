@@ -12,7 +12,7 @@ $client = $clientBuilder->build();
 $filePath = __DIR__ . '/data/sample2.xlsx';
 //$filePath = __DIR__ . '/data/160623-PRODUCTION-Matte Direkt 9.xlsx';
 
-$indexName = 'mralbert_swedish_full';
+$indexName = 'mralbert_swedish_full_3';
 $typeName = 'exercises';
 
 try {
@@ -57,7 +57,7 @@ $worksheet = $excel->setActiveSheetIndex(0);
 $exercises = [];
 foreach ($worksheet->getRowIterator(2) as $row) {
 
-    $number = (int)$worksheet->getCellByColumnAndRow(8, $row->getRowIndex())->getValue();
+    $number = (string)$worksheet->getCellByColumnAndRow(8, $row->getRowIndex())->getValue();
     $variant = (string)$worksheet->getCellByColumnAndRow(9, $row->getRowIndex())->getValue();
 
     $exercises['body'][] = [
