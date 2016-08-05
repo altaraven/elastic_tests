@@ -12,6 +12,9 @@ $client = $clientBuilder->build();
 $filePath = __DIR__ . '/data/sample1.xlsx';
 //$filePath = __DIR__ . '/data/160623-PRODUCTION-Matte Direkt 9.xlsx';
 
+$indexName = 'mralbert_swedish';
+$typeName = 'exercises';
+
 try {
     $reader = new PHPExcel_Reader_Excel2007();
 
@@ -59,8 +62,8 @@ foreach ($worksheet->getRowIterator(2) as $row) {
 
     $exercises['body'][] = [
         'index' => [
-            '_index' => 'mralbert',
-            '_type' => 'exercises4',
+            '_index' => $indexName,
+            '_type' => $typeName,
             '_id' => $worksheet->getCellByColumnAndRow(13, $row->getRowIndex())->getOldCalculatedValue()
         ]
     ];
@@ -79,28 +82,7 @@ foreach ($worksheet->getRowIterator(2) as $row) {
         'exerciseText' => $worksheet->getCellByColumnAndRow(16, $row->getRowIndex())->getOldCalculatedValue(),
         'lessonId' => $worksheet->getCellByColumnAndRow(18, $row->getRowIndex())->getValue(),
         'lessonName' => $worksheet->getCellByColumnAndRow(20, $row->getRowIndex())->getOldCalculatedValue(),
-//        'lesson' => [
-//            'id' => $worksheet->getCellByColumnAndRow(18, $row->getRowIndex())->getValue(),
-//            'name' => $worksheet->getCellByColumnAndRow(20, $row->getRowIndex())->getOldCalculatedValue(),
-//        ],
-
     ];
-
-
-//    $exercises[] = [
-//        'id' => $worksheet->getCellByColumnAndRow(13, $row->getRowIndex())->getOldCalculatedValue(),
-//        'chapterName' => $worksheet->getCellByColumnAndRow(2, $row->getRowIndex())->getValue(),
-//        'subChapterName' => $worksheet->getCellByColumnAndRow(6, $row->getRowIndex())->getValue(),
-//        'number' => (int)$worksheet->getCellByColumnAndRow(8, $row->getRowIndex())->getValue(),
-//        'exerciseText' => $worksheet->getCellByColumnAndRow(16, $row->getRowIndex())->getOldCalculatedValue(),
-//        'lessonId' => $worksheet->getCellByColumnAndRow(18, $row->getRowIndex())->getValue(),
-//        'lessonName' => $worksheet->getCellByColumnAndRow(20, $row->getRowIndex())->getOldCalculatedValue(),
-////        'lesson' => [
-////            'id' => $worksheet->getCellByColumnAndRow(18, $row->getRowIndex())->getValue(),
-////            'name' => $worksheet->getCellByColumnAndRow(20, $row->getRowIndex())->getOldCalculatedValue(),
-////        ],
-//
-//    ];
 }
 
 //var_dump($exercises);
