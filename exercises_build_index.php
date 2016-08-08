@@ -3,7 +3,7 @@ date_default_timezone_set('Europe/Kiev');
 
 require(__DIR__ . '/vendor/autoload.php');
 
-$indexName = 'mralbert_swedish_full_3';
+$indexName = 'mralbert_swedish_full_5';
 $typeName = 'exercises';
 
 $clientBuilder = Elasticsearch\ClientBuilder::create();
@@ -60,7 +60,6 @@ $params = [
                     ],
                     'chapterName' => [
                         'type' => 'string',
-//                        'index' => 'analyzed'
                         'analyzer' => 'my_analyzer'
                     ],
                     'exerciseText' => [
@@ -69,10 +68,12 @@ $params = [
                         'analyzer' => 'my_analyzer'
                     ],
                     'lessonId' => [
-                        'type' => 'string'
+                        'type' => 'string',
+                        'include_in_all' => false,
                     ],
                     'lessonName' => [
-                        'type' => 'string'
+                        'type' => 'string',
+                        'include_in_all' => false,
                     ],
                     'number' => [
                         'type' => 'long',
@@ -102,6 +103,15 @@ $params = [
                     'variant' => [
                         'type' => 'string',
 //                        'boost' => 2
+                    ],
+                    'numVarChaptSubChapt' => [
+                        'type' => 'string'
+                    ],
+                    'suggest' => [
+                        'type' => 'completion',
+                        'analyzer' => 'simple',
+                        'search_analyzer' => 'simple',
+                        'payloads' => true
                     ]
                 ]
             ]

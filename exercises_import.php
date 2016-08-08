@@ -12,7 +12,7 @@ $client = $clientBuilder->build();
 $filePath = __DIR__ . '/data/sample2.xlsx';
 //$filePath = __DIR__ . '/data/160623-PRODUCTION-Matte Direkt 9.xlsx';
 
-$indexName = 'mralbert_swedish_full_3';
+$indexName = 'mralbert_swedish_full_5';
 $typeName = 'exercises';
 
 try {
@@ -59,6 +59,8 @@ foreach ($worksheet->getRowIterator(2) as $row) {
 
     $number = (string)$worksheet->getCellByColumnAndRow(8, $row->getRowIndex())->getValue();
     $variant = (string)$worksheet->getCellByColumnAndRow(9, $row->getRowIndex())->getValue();
+    $chapterName = $worksheet->getCellByColumnAndRow(2, $row->getRowIndex())->getValue();
+    $subChapterName = $worksheet->getCellByColumnAndRow(6, $row->getRowIndex())->getValue();
 
     $exercises['body'][] = [
         'index' => [
@@ -73,8 +75,8 @@ foreach ($worksheet->getRowIterator(2) as $row) {
     $exercises['body'][] = [
 //        'id' => $worksheet->getCellByColumnAndRow(13, $row->getRowIndex())->getCalculatedValue(),
         'chapterNumber' => 'Kapitel ' .  $worksheet->getCellByColumnAndRow(1, $row->getRowIndex())->getValue(),
-        'chapterName' => $worksheet->getCellByColumnAndRow(2, $row->getRowIndex())->getValue(),
-        'subChapterName' => $worksheet->getCellByColumnAndRow(6, $row->getRowIndex())->getValue(),
+        'chapterName' => $chapterName,
+        'subChapterName' => $subChapterName,
         'number' => $number,
         'variant' => $variant,
         'numberVariant' => $number . $variant,
@@ -82,6 +84,7 @@ foreach ($worksheet->getRowIterator(2) as $row) {
         'exerciseNumberVariant2' => $variant ? 'uppgift ' .  $number . ' ' . $variant : 'uppgift ' .  $number,
         'exerciseNumberVariant3' => $variant ? 'övning ' .  $number . ' ' . $variant : 'övning ' .  $number,
         'exerciseText' => $worksheet->getCellByColumnAndRow(16, $row->getRowIndex())->getCalculatedValue(),
+        'numVarChaptSubChapt' => $number . $variant . ' ' . $chapterName . ' ' . $subChapterName,
         'lessonId' => $worksheet->getCellByColumnAndRow(18, $row->getRowIndex())->getValue(),
         'lessonName' => $worksheet->getCellByColumnAndRow(20, $row->getRowIndex())->getCalculatedValue(),
     ];
