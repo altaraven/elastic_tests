@@ -12,7 +12,7 @@ $client = $clientBuilder->build();
 $filePath = __DIR__ . '/data/sample2.xlsx';
 //$filePath = __DIR__ . '/data/160623-PRODUCTION-Matte Direkt 9.xlsx';
 
-$indexName = 'mralbert_swedish_full_5';
+$indexName = 'mralbert_swedish_full_7';
 $typeName = 'exercises';
 
 try {
@@ -62,6 +62,13 @@ foreach ($worksheet->getRowIterator(2) as $row) {
     $chapterName = $worksheet->getCellByColumnAndRow(2, $row->getRowIndex())->getValue();
     $subChapterName = $worksheet->getCellByColumnAndRow(6, $row->getRowIndex())->getValue();
 
+    $exerciseText = $worksheet->getCellByColumnAndRow(16, $row->getRowIndex())->getCalculatedValue();
+
+    $exercise_words = str_word_count(strtolower($exerciseText), 1, 'åäöáüè');
+    $exercise_words_array = array_filter($exercise_words, function($word) {
+        return (strlen($word) > 1);
+    });
+
     $exercises['body'][] = [
         'index' => [
             '_index' => $indexName,
@@ -83,10 +90,21 @@ foreach ($worksheet->getRowIterator(2) as $row) {
         'exerciseNumberVariant1' => $variant ? 'tal ' .  $number . ' ' . $variant : 'tal ' .  $number,
         'exerciseNumberVariant2' => $variant ? 'uppgift ' .  $number . ' ' . $variant : 'uppgift ' .  $number,
         'exerciseNumberVariant3' => $variant ? 'övning ' .  $number . ' ' . $variant : 'övning ' .  $number,
-        'exerciseText' => $worksheet->getCellByColumnAndRow(16, $row->getRowIndex())->getCalculatedValue(),
+        'exerciseText' => $exerciseText,
         'numVarChaptSubChapt' => $number . $variant . ' ' . $chapterName . ' ' . $subChapterName,
         'lessonId' => $worksheet->getCellByColumnAndRow(18, $row->getRowIndex())->getValue(),
         'lessonName' => $worksheet->getCellByColumnAndRow(20, $row->getRowIndex())->getCalculatedValue(),
+        'suggest' => [
+            'input' => array_merge([
+                'Kapitel',
+                'tal',
+                'uppgift',
+                'övning',
+                $chapterName,
+                $subChapterName,
+                $number . $variant,
+            ], $exercise_words_array),
+        ]
     ];
 }
 
