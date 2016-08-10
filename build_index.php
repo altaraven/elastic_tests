@@ -3,8 +3,7 @@ date_default_timezone_set('Europe/Kiev');
 
 require(__DIR__ . '/vendor/autoload.php');
 
-$indexName = 'mralbert_swedish_full_8';
-$typeName = 'exercises';
+$indexName = 'mralbert_swedish_full_13';
 
 $clientBuilder = Elasticsearch\ClientBuilder::create();
 $clientBuilder->setHosts([
@@ -15,57 +14,52 @@ $client = $clientBuilder->build();
 $params = [
     'index' => $indexName,
     'body' => [
-        'settings' => [
-            'analysis' => [
-                'analyzer' => [
-                    'my_analyzer' => [
-                        'type' => 'snowball',
-                        'language' => 'Swedish'
-                    ]
-                ]
-            ],
+//        'settings' => [
 //            'analysis' => [
-//                'filter' => [
-//                    'swedish_stop' => [
-//                        'type' => 'stop',
-//                        'stopwords' => '_swedish_'
-//                    ],
-////                    'swedish_keywords' => [
-////                        'type' => 'keyword_marker',
-////                        'keywords' => []
-////                    ],
-//                    'swedish_stemmer' => [
-//                        'type' => 'stemmer',
-//                        'language' => 'swedish'
-//                    ]
-//                ],
 //                'analyzer' => [
-//                    'swedish' => [
-//                        'tokenizer' => 'standard',
-//                        'filter' => [
-//                            'lowercase',
-//                            'swedish_stop',
-////                            'swedish_keywords',
-//                            'swedish_stemmer'
-//                        ]
+//                    'my_analyzer' => [
+//                        'type' => 'snowball',
+//                        'language' => 'Swedish'
 //                    ]
 //                ]
 //            ],
-        ],
+//        ],
         'mappings' => [
-            $typeName => [
+            'lessons' => [
+                'properties' => [
+                    'lessonId' => [
+                        'type' => 'string',
+                        'include_in_all' => false,
+                    ],
+                    'lessonName' => [
+                        'type' => 'string',
+                    ],
+                    'chapterName' => [
+                        'type' => 'string',
+                    ],
+                    'subChapterName' => [
+                        'type' => 'string',
+                    ],
+                    'lessons_suggest' => [
+                        'type' => 'completion',
+                        'analyzer' => 'simple',
+                        'search_analyzer' => 'simple',
+                        'payloads' => false
+                    ],
+                ],
+            ],
+            'exercises' => [
                 'properties' => [
                     'chapterNumber' => [
                         'type' => 'string'
                     ],
                     'chapterName' => [
                         'type' => 'string',
-                        'analyzer' => 'my_analyzer'
+//                        'analyzer' => 'my_analyzer'
                     ],
                     'exerciseText' => [
                         'type' => 'string',
-//                        'index' => 'analyzed'
-                        'analyzer' => 'my_analyzer'
+//                        'analyzer' => 'my_analyzer'
                     ],
                     'lessonId' => [
                         'type' => 'string',
@@ -77,28 +71,22 @@ $params = [
                     ],
                     'number' => [
                         'type' => 'long',
-//                        'boost' => 2
                     ],
                     'numberVariant' => [
                         'type' => 'string',
-//                        'boost' => 3
                     ],
                     'exerciseNumberVariant1' => [
                         'type' => 'string',
-//                        'boost' => 2
                     ],
                     'exerciseNumberVariant2' => [
                         'type' => 'string',
-//                        'boost' => 2
                     ],
                     'exerciseNumberVariant3' => [
                         'type' => 'string',
-//                        'boost' => 2
                     ],
                     'subChapterName' => [
                         'type' => 'string',
-//                        'index' => 'analyzed'
-                        'analyzer' => 'my_analyzer'
+//                        'analyzer' => 'my_analyzer'
                     ],
                     'variant' => [
                         'type' => 'string',
@@ -107,7 +95,7 @@ $params = [
                     'numVarChaptSubChapt' => [
                         'type' => 'string'
                     ],
-                    'suggest' => [
+                    'exercises_suggest' => [
                         'type' => 'completion',
                         'analyzer' => 'simple',
                         'search_analyzer' => 'simple',

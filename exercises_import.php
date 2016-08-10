@@ -9,36 +9,18 @@ $clientBuilder->setHosts([
 ]);
 $client = $clientBuilder->build();
 
-$filePath = __DIR__ . '/data/sample2.xlsx';
-//$filePath = __DIR__ . '/data/160623-PRODUCTION-Matte Direkt 9.xlsx';
+$filePath = __DIR__ . '/data/sample_exercises.xlsx';
 
-$indexName = 'mralbert_swedish_full_8';
+$indexName = 'mralbert_swedish_full_13';
 $typeName = 'exercises';
 
 try {
     $reader = new PHPExcel_Reader_Excel2007();
-
-    // http://stackoverflow.com/questions/13626678/phpexcel-how-to-
-    // check-whether-a-xls-file-is-valid-or-not
-    //
     if ($reader->canRead($filePath) !== true) {
         echo "Invalid xlsx file.";
         exit();
     }
 
-    /*
-           If you're only interested in the cell values in a workbook,
-           but don't need any of the cell formatting information,
-           then you can set the reader to read only the data values
-           and any formulas from each cell using the setReadDataOnly() method.
-
-           It is important to note that Workbooks (and PHPExcel) store dates and
-           times as simple numeric values: they can only be distinguished from
-           other numeric values by the format mask that is applied to that cell.
-           When setting read data only to true, PHPExcel doesn't read the cell
-           format masks, so it is not possible to differentiate between dates/times
-           and numbers.
-     */
     $reader->setReadDataOnly(true);
 
     $excel = $reader->load($filePath);
@@ -49,8 +31,6 @@ try {
     echo "Exception, error loading file 2:" . $e->getMessage();
     exit();
 }
-
-// set worksheet
 
 $worksheet = $excel->setActiveSheetIndex(0);
 
@@ -64,11 +44,12 @@ foreach ($worksheet->getRowIterator(2) as $row) {
 
     $exerciseText = $worksheet->getCellByColumnAndRow(16, $row->getRowIndex())->getCalculatedValue();
 
-    $exercise_words = str_word_count(strtolower($exerciseText), 1, 'åäöáüè');
-    $exercise_words = array_merge([
-        'Kapitel', 'tal', 'uppgift', 'övning', $chapterName, $subChapterName, $number . $variant
-    ], $exercise_words);
-    $tags_array = array_filter($exercise_words, function ($word) {
+    $summary_string = implode(' ', [
+        'Kapitel', 'tal', 'uppgift', 'övning', $chapterName, $subChapterName, $number . $variant, $exerciseText
+    ]);
+
+    $words = str_word_count(strtolower($summary_string), 1, 'åäöáüè');
+    $tags_array = array_filter(array_unique($words), function ($word) {
         return (strlen($word) > 1);
     });
 
@@ -97,7 +78,7 @@ foreach ($worksheet->getRowIterator(2) as $row) {
         'numVarChaptSubChapt' => $number . $variant . ' ' . $chapterName . ' ' . $subChapterName,
         'lessonId' => $worksheet->getCellByColumnAndRow(18, $row->getRowIndex())->getValue(),
         'lessonName' => $worksheet->getCellByColumnAndRow(20, $row->getRowIndex())->getCalculatedValue(),
-        'suggest' => [
+        'exercises_suggest' => [
             'input' => $tags_array,
         ]
     ];
