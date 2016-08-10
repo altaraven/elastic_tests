@@ -12,7 +12,7 @@ $client = $clientBuilder->build();
 $filePath = __DIR__ . '/data/sample2.xlsx';
 //$filePath = __DIR__ . '/data/160623-PRODUCTION-Matte Direkt 9.xlsx';
 
-$indexName = 'mralbert_swedish_full_7';
+$indexName = 'mralbert_swedish_full_8';
 $typeName = 'exercises';
 
 try {
@@ -65,7 +65,10 @@ foreach ($worksheet->getRowIterator(2) as $row) {
     $exerciseText = $worksheet->getCellByColumnAndRow(16, $row->getRowIndex())->getCalculatedValue();
 
     $exercise_words = str_word_count(strtolower($exerciseText), 1, 'åäöáüè');
-    $exercise_words_array = array_filter($exercise_words, function($word) {
+    $exercise_words = array_merge([
+        'Kapitel', 'tal', 'uppgift', 'övning', $chapterName, $subChapterName, $number . $variant
+    ], $exercise_words);
+    $tags_array = array_filter($exercise_words, function ($word) {
         return (strlen($word) > 1);
     });
 
@@ -81,29 +84,21 @@ foreach ($worksheet->getRowIterator(2) as $row) {
 //    "exerciseText": null
     $exercises['body'][] = [
 //        'id' => $worksheet->getCellByColumnAndRow(13, $row->getRowIndex())->getCalculatedValue(),
-        'chapterNumber' => 'Kapitel ' .  $worksheet->getCellByColumnAndRow(1, $row->getRowIndex())->getValue(),
+        'chapterNumber' => 'Kapitel ' . $worksheet->getCellByColumnAndRow(1, $row->getRowIndex())->getValue(),
         'chapterName' => $chapterName,
         'subChapterName' => $subChapterName,
         'number' => $number,
         'variant' => $variant,
         'numberVariant' => $number . $variant,
-        'exerciseNumberVariant1' => $variant ? 'tal ' .  $number . ' ' . $variant : 'tal ' .  $number,
-        'exerciseNumberVariant2' => $variant ? 'uppgift ' .  $number . ' ' . $variant : 'uppgift ' .  $number,
-        'exerciseNumberVariant3' => $variant ? 'övning ' .  $number . ' ' . $variant : 'övning ' .  $number,
+        'exerciseNumberVariant1' => $variant ? 'tal ' . $number . ' ' . $variant : 'tal ' . $number,
+        'exerciseNumberVariant2' => $variant ? 'uppgift ' . $number . ' ' . $variant : 'uppgift ' . $number,
+        'exerciseNumberVariant3' => $variant ? 'övning ' . $number . ' ' . $variant : 'övning ' . $number,
         'exerciseText' => $exerciseText,
         'numVarChaptSubChapt' => $number . $variant . ' ' . $chapterName . ' ' . $subChapterName,
         'lessonId' => $worksheet->getCellByColumnAndRow(18, $row->getRowIndex())->getValue(),
         'lessonName' => $worksheet->getCellByColumnAndRow(20, $row->getRowIndex())->getCalculatedValue(),
         'suggest' => [
-            'input' => array_merge([
-                'Kapitel',
-                'tal',
-                'uppgift',
-                'övning',
-                $chapterName,
-                $subChapterName,
-                $number . $variant,
-            ], $exercise_words_array),
+            'input' => $tags_array,
         ]
     ];
 }

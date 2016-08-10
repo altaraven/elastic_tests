@@ -3,7 +3,7 @@ date_default_timezone_set('Europe/Kiev');
 
 require(__DIR__ . '/vendor/autoload.php');
 
-$indexName = 'mralbert_swedish_full_7';
+$indexName = 'mralbert_swedish_full_8';
 $typeName = 'exercises';
 
 $clientBuilder = Elasticsearch\ClientBuilder::create();
