@@ -11,7 +11,7 @@ $client = $clientBuilder->build();
 
 $filePath = __DIR__ . '/data/sample_exercises.xlsx';
 
-$indexName = 'mralbert_swedish_full_14';
+$indexName = 'mralbert_final_8';
 $typeName = 'exercises';
 
 try {
@@ -35,8 +35,11 @@ try {
 $worksheet = $excel->setActiveSheetIndex(0);
 
 $exercises = [];
+$suggest_words = [];
+$i = 0;
 foreach ($worksheet->getRowIterator(2) as $row) {
 
+    $_id = $worksheet->getCellByColumnAndRow(13, $row->getRowIndex())->getCalculatedValue();
     $number = (string)$worksheet->getCellByColumnAndRow(8, $row->getRowIndex())->getValue();
     $variant = (string)$worksheet->getCellByColumnAndRow(9, $row->getRowIndex())->getValue();
     $chapterName = $worksheet->getCellByColumnAndRow(2, $row->getRowIndex())->getValue();
@@ -49,19 +52,22 @@ foreach ($worksheet->getRowIterator(2) as $row) {
     ]);
 
     $words = str_word_count(strtolower($summary_string), 1, 'åäöáüè');
-    $tags_array = array_filter(array_unique($words), function ($word) {
+    $tags_array = array_filter($words, function ($word) {
         return (strlen($word) > 1);
     });
+
+    $suggest_words = array_merge($suggest_words, $tags_array);
 
     $exercises['body'][] = [
         'index' => [
             '_index' => $indexName,
             '_type' => $typeName,
-            '_id' => $worksheet->getCellByColumnAndRow(13, $row->getRowIndex())->getCalculatedValue()
+            '_id' => $_id
         ]
     ];
 
 //    9789152302484-1-x1_1x-SF-1
+//    9789152302484-3-x3_1x-G-11c     !!!!!!!!!!!!
 //    "exerciseText": null
     $exercises['body'][] = [
 //        'id' => $worksheet->getCellByColumnAndRow(13, $row->getRowIndex())->getCalculatedValue(),
@@ -78,50 +84,27 @@ foreach ($worksheet->getRowIterator(2) as $row) {
         'numVarChaptSubChapt' => $number . $variant . ' ' . $chapterName . ' ' . $subChapterName,
         'lessonId' => $worksheet->getCellByColumnAndRow(18, $row->getRowIndex())->getValue(),
         'lessonName' => $worksheet->getCellByColumnAndRow(20, $row->getRowIndex())->getCalculatedValue(),
+    ];
+}
+//var_dump(count($suggest_words));
+$suggest_words = array_unique($suggest_words);
+$exercises_suggest = [];
+foreach ($suggest_words as $word) {
+    $exercises_suggest['body'][] = [
+        'index' => [
+            '_index' => $indexName,
+            '_type' => $typeName . '_suggest',
+        ]
+    ];
+
+    $exercises_suggest['body'][] = [
+        'word' => $word,
         'exercises_suggest' => [
-            'input' => $tags_array,
+            'input' => $word,
         ]
     ];
 }
 
-//var_dump($exercises);
-
 
 $responses = $client->bulk($exercises);
-//var_dump($responses);
-
-/*
-{
-  "sort": {
-      "_score": "desc",
-      "chapterName": "asc",
-      "subChapterName": "asc",
-      "number": "asc",
-      "variant": "asc"
-    },
-  "query": {
-    "multi_match": {
-      "query": "Kapitelen 1",
-      "fields" : [ "chapterNumber", "chapterName", "subChapterName", "numberVariant", "exerciseNumberVariant*", "exerciseText" ]
-    }
-  }
-}
-*/
-
-/*
-http://localhost:9200/mralbert/exercises4/_search
-{
-  "sort": {
-      "_score": "desc",
-      "chapterName": "asc",
-      "subChapterName": "asc",
-      "number": "asc",
-      "variant": "asc"
-    },
-  "query": {
-    "match": {
-      "_all": "15b Tal Grundkurs"
-    }
-  }
-}
-*/
+$responses2 = $client->bulk($exercises_suggest);

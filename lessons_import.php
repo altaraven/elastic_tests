@@ -11,7 +11,7 @@ $client = $clientBuilder->build();
 
 $filePath = __DIR__ . '/data/160404-Lessons upload.xlsx';
 
-$indexName = 'mralbert_swedish_full_14';
+$indexName = 'mralbert_final_2';
 $typeName = 'lessons';
 
 try {

@@ -3,7 +3,7 @@ date_default_timezone_set('Europe/Kiev');
 
 require(__DIR__ . '/vendor/autoload.php');
 
-$indexName = 'mralbert_swedish_full_14';
+$indexName = 'mralbert_final_8';
 
 $clientBuilder = Elasticsearch\ClientBuilder::create();
 $clientBuilder->setHosts([
@@ -25,27 +25,40 @@ $params = [
 //            ],
 //        ],
         'mappings' => [
-            'lessons' => [
+//            'lessons' => [
+//                'properties' => [
+//                    'lessonId' => [
+//                        'type' => 'string',
+//                        'include_in_all' => false,
+//                    ],
+//                    'lessonName' => [
+//                        'type' => 'string',
+//                    ],
+//                    'chapterName' => [
+//                        'type' => 'string',
+//                    ],
+//                    'subChapterName' => [
+//                        'type' => 'string',
+//                    ],
+//                    'lessons_suggest' => [
+//                        'type' => 'completion',
+//                        'analyzer' => 'simple',
+//                        'search_analyzer' => 'simple',
+//                        'payloads' => false
+//                    ],
+//                ],
+//            ],
+            'exercises_suggest' => [
                 'properties' => [
-                    'lessonId' => [
-                        'type' => 'string',
-                        'include_in_all' => false,
-                    ],
-                    'lessonName' => [
+                    'word' => [
                         'type' => 'string',
                     ],
-                    'chapterName' => [
-                        'type' => 'string',
-                    ],
-                    'subChapterName' => [
-                        'type' => 'string',
-                    ],
-                    'lessons_suggest' => [
+                    'exercises_suggest' => [
                         'type' => 'completion',
                         'analyzer' => 'simple',
                         'search_analyzer' => 'simple',
                         'payloads' => false
-                    ],
+                    ]
                 ],
             ],
             'exercises' => [
@@ -95,12 +108,12 @@ $params = [
                     'numVarChaptSubChapt' => [
                         'type' => 'string'
                     ],
-                    'exercises_suggest' => [
-                        'type' => 'completion',
-                        'analyzer' => 'simple',
-                        'search_analyzer' => 'simple',
-                        'payloads' => false
-                    ]
+//                    'suggest' => [
+//                        'type' => 'completion',
+//                        'analyzer' => 'simple',
+//                        'search_analyzer' => 'simple',
+//                        'payloads' => false
+//                    ]
                 ]
             ]
         ]
