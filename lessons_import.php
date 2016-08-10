@@ -53,7 +53,7 @@ foreach ($worksheet->getRowIterator(2) as $row) {
         'index' => [
             '_index' => $indexName,
             '_type' => $typeName,
-            '_id' => $worksheet->getCellByColumnAndRow(13, $row->getRowIndex())->getCalculatedValue()
+            '_id' => $lessonId
         ]
     ];
 
