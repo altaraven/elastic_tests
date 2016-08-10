@@ -11,7 +11,7 @@ $client = $clientBuilder->build();
 
 $filePath = __DIR__ . '/data/160404-Lessons upload.xlsx';
 
-$indexName = 'mralbert_final_2';
+$indexName = 'mralbert_final_10';
 $typeName = 'lessons';
 
 try {
@@ -35,6 +35,7 @@ try {
 $worksheet = $excel->setActiveSheetIndex(0);
 
 $data = [];
+$suggest_words = [];
 foreach ($worksheet->getRowIterator(2) as $row) {
 
     $chapterName = $worksheet->getCellByColumnAndRow(1, $row->getRowIndex())->getCalculatedValue();
@@ -42,12 +43,16 @@ foreach ($worksheet->getRowIterator(2) as $row) {
     $lessonId = $worksheet->getCellByColumnAndRow(0, $row->getRowIndex())->getValue();
     $lessonName = $worksheet->getCellByColumnAndRow(5, $row->getRowIndex())->getCalculatedValue();
 
+    /**/
     $summary_string = implode(' ', [$chapterName, $subChapterName, $lessonId, $lessonName]);
 
     $words = str_word_count(strtolower($summary_string), 1, 'åäöáüè');
-    $tags_array = array_filter(array_unique($words), function ($word) {
+    $tags_array = array_filter($words, function ($word) {
         return (strlen($word) > 1);
     });
+
+    $suggest_words = array_merge($suggest_words, $tags_array);
+    /**/
 
     $data['body'][] = [
         'index' => [
@@ -62,10 +67,26 @@ foreach ($worksheet->getRowIterator(2) as $row) {
         'lessonName' => $lessonName,
         'chapterName' => $chapterName,
         'subChapterName' => $subChapterName,
+    ];
+}
+
+$suggest_words = array_unique($suggest_words);
+$lessons_suggest = [];
+foreach ($suggest_words as $word) {
+    $lessons_suggest['body'][] = [
+        'index' => [
+            '_index' => $indexName,
+            '_type' => $typeName . '_suggest',
+        ]
+    ];
+
+    $lessons_suggest['body'][] = [
+        'word' => $word,
         'lessons_suggest' => [
-            'input' => $tags_array,
+            'input' => $word,
         ]
     ];
 }
 
 $responses = $client->bulk($data);
+$responses2 = $client->bulk($lessons_suggest);

@@ -3,7 +3,7 @@ date_default_timezone_set('Europe/Kiev');
 
 require(__DIR__ . '/vendor/autoload.php');
 
-$indexName = 'mralbert_final_8';
+$indexName = 'mralbert_final_10';
 
 $clientBuilder = Elasticsearch\ClientBuilder::create();
 $clientBuilder->setHosts([
@@ -25,29 +25,36 @@ $params = [
 //            ],
 //        ],
         'mappings' => [
-//            'lessons' => [
-//                'properties' => [
-//                    'lessonId' => [
-//                        'type' => 'string',
-//                        'include_in_all' => false,
-//                    ],
-//                    'lessonName' => [
-//                        'type' => 'string',
-//                    ],
-//                    'chapterName' => [
-//                        'type' => 'string',
-//                    ],
-//                    'subChapterName' => [
-//                        'type' => 'string',
-//                    ],
-//                    'lessons_suggest' => [
-//                        'type' => 'completion',
-//                        'analyzer' => 'simple',
-//                        'search_analyzer' => 'simple',
-//                        'payloads' => false
-//                    ],
-//                ],
-//            ],
+            'lessons' => [
+                'properties' => [
+                    'lessonId' => [
+                        'type' => 'string',
+                        'include_in_all' => false,
+                    ],
+                    'lessonName' => [
+                        'type' => 'string',
+                    ],
+                    'chapterName' => [
+                        'type' => 'string',
+                    ],
+                    'subChapterName' => [
+                        'type' => 'string',
+                    ],
+                ],
+            ],
+            'lessons_suggest' => [
+                'properties' => [
+                    'word' => [
+                        'type' => 'string',
+                    ],
+                    'lessons_suggest' => [
+                        'type' => 'completion',
+                        'analyzer' => 'simple',
+                        'search_analyzer' => 'simple',
+                        'payloads' => false
+                    ]
+                ],
+            ],
             'exercises_suggest' => [
                 'properties' => [
                     'word' => [
@@ -108,12 +115,6 @@ $params = [
                     'numVarChaptSubChapt' => [
                         'type' => 'string'
                     ],
-//                    'suggest' => [
-//                        'type' => 'completion',
-//                        'analyzer' => 'simple',
-//                        'search_analyzer' => 'simple',
-//                        'payloads' => false
-//                    ]
                 ]
             ]
         ]

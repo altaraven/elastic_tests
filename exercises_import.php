@@ -11,7 +11,7 @@ $client = $clientBuilder->build();
 
 $filePath = __DIR__ . '/data/sample_exercises.xlsx';
 
-$indexName = 'mralbert_final_8';
+$indexName = 'mralbert_final_10';
 $typeName = 'exercises';
 
 try {
@@ -36,7 +36,6 @@ $worksheet = $excel->setActiveSheetIndex(0);
 
 $exercises = [];
 $suggest_words = [];
-$i = 0;
 foreach ($worksheet->getRowIterator(2) as $row) {
 
     $_id = $worksheet->getCellByColumnAndRow(13, $row->getRowIndex())->getCalculatedValue();
@@ -66,11 +65,8 @@ foreach ($worksheet->getRowIterator(2) as $row) {
         ]
     ];
 
-//    9789152302484-1-x1_1x-SF-1
-//    9789152302484-3-x3_1x-G-11c     !!!!!!!!!!!!
-//    "exerciseText": null
+//    9789152302484-3-x3_1x-G-11c
     $exercises['body'][] = [
-//        'id' => $worksheet->getCellByColumnAndRow(13, $row->getRowIndex())->getCalculatedValue(),
         'chapterNumber' => 'Kapitel ' . $worksheet->getCellByColumnAndRow(1, $row->getRowIndex())->getValue(),
         'chapterName' => $chapterName,
         'subChapterName' => $subChapterName,
@@ -104,7 +100,6 @@ foreach ($suggest_words as $word) {
         ]
     ];
 }
-
 
 $responses = $client->bulk($exercises);
 $responses2 = $client->bulk($exercises_suggest);
