@@ -11,7 +11,7 @@ $client = $clientBuilder->build();
 
 $filePath = __DIR__ . '/data/160404-Lessons upload.xlsx';
 
-$indexName = 'mralbert_final_10';
+$indexName = 'mralbert';
 $typeName = 'lessons';
 
 try {
@@ -38,13 +38,14 @@ $data = [];
 $suggest_words = [];
 foreach ($worksheet->getRowIterator(2) as $row) {
 
-    $chapterName = $worksheet->getCellByColumnAndRow(1, $row->getRowIndex())->getCalculatedValue();
-    $subChapterName = $worksheet->getCellByColumnAndRow(2, $row->getRowIndex())->getCalculatedValue();
+    $centralArea = $worksheet->getCellByColumnAndRow(1, $row->getRowIndex())->getCalculatedValue();
+    $mainArea = $worksheet->getCellByColumnAndRow(2, $row->getRowIndex())->getCalculatedValue();
     $lessonId = $worksheet->getCellByColumnAndRow(0, $row->getRowIndex())->getValue();
     $lessonName = $worksheet->getCellByColumnAndRow(5, $row->getRowIndex())->getCalculatedValue();
+    $keywords = $worksheet->getCellByColumnAndRow(6, $row->getRowIndex())->getCalculatedValue();
 
     /**/
-    $summary_string = implode(' ', [$chapterName, $subChapterName, $lessonId, $lessonName]);
+    $summary_string = implode(' ', [$centralArea, $mainArea, $lessonId, $lessonName, $keywords]);
 
     $words = str_word_count(strtolower($summary_string), 1, 'åäöáüè');
     $tags_array = array_filter($words, function ($word) {
@@ -65,8 +66,9 @@ foreach ($worksheet->getRowIterator(2) as $row) {
     $data['body'][] = [
         'lessonId' => $lessonId,
         'lessonName' => $lessonName,
-        'chapterName' => $chapterName,
-        'subChapterName' => $subChapterName,
+        'centralArea' => $centralArea,
+        'mainArea' => $mainArea,
+        'keywords' => $keywords,
     ];
 }
 

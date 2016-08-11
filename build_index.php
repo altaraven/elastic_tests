@@ -3,7 +3,7 @@ date_default_timezone_set('Europe/Kiev');
 
 require(__DIR__ . '/vendor/autoload.php');
 
-$indexName = 'mralbert_final_10';
+$indexName = 'mralbert';
 
 $clientBuilder = Elasticsearch\ClientBuilder::create();
 $clientBuilder->setHosts([
@@ -34,10 +34,13 @@ $params = [
                     'lessonName' => [
                         'type' => 'string',
                     ],
-                    'chapterName' => [
+                    'keywords' => [
                         'type' => 'string',
                     ],
-                    'subChapterName' => [
+                    'centralArea' => [
+                        'type' => 'string',
+                    ],
+                    'mainArea' => [
                         'type' => 'string',
                     ],
                 ],
@@ -70,6 +73,10 @@ $params = [
             ],
             'exercises' => [
                 'properties' => [
+                    'isbn' => [
+                        'type' => 'string',
+                        'include_in_all' => false,
+                    ],
                     'chapterNumber' => [
                         'type' => 'string'
                     ],

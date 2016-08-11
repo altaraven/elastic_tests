@@ -11,7 +11,7 @@ $client = $clientBuilder->build();
 
 $filePath = __DIR__ . '/data/sample_exercises.xlsx';
 
-$indexName = 'mralbert_final_10';
+$indexName = 'mralbert';
 $typeName = 'exercises';
 
 try {
@@ -38,6 +38,7 @@ $exercises = [];
 $suggest_words = [];
 foreach ($worksheet->getRowIterator(2) as $row) {
 
+    $isbn = (string)$worksheet->getCellByColumnAndRow(0, $row->getRowIndex())->getValue();
     $_id = $worksheet->getCellByColumnAndRow(13, $row->getRowIndex())->getCalculatedValue();
     $number = (string)$worksheet->getCellByColumnAndRow(8, $row->getRowIndex())->getValue();
     $variant = (string)$worksheet->getCellByColumnAndRow(9, $row->getRowIndex())->getValue();
@@ -67,6 +68,7 @@ foreach ($worksheet->getRowIterator(2) as $row) {
 
 //    9789152302484-3-x3_1x-G-11c
     $exercises['body'][] = [
+        'isbn' => $isbn,
         'chapterNumber' => 'Kapitel ' . $worksheet->getCellByColumnAndRow(1, $row->getRowIndex())->getValue(),
         'chapterName' => $chapterName,
         'subChapterName' => $subChapterName,
