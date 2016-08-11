@@ -1,0 +1,106 @@
+/*
+  POST http://localhost:9200/mralbert/
+*/
+{
+  "mappings": {
+    "exercises": {
+      "properties": {
+        "chapterName": {
+          "type": "string"
+        },
+        "chapterNumber": {
+          "type": "string"
+        },
+        "exerciseNumberVariant1": {
+          "type": "string"
+        },
+        "exerciseNumberVariant2": {
+          "type": "string"
+        },
+        "exerciseNumberVariant3": {
+          "type": "string"
+        },
+        "exerciseText": {
+          "type": "string"
+        },
+        "isbn": {
+          "type": "string",
+          "include_in_all": false
+        },
+        "lessonId": {
+          "type": "string",
+          "include_in_all": false
+        },
+        "lessonName": {
+          "type": "string",
+          "include_in_all": false
+        },
+        "numVarChaptSubChapt": {
+          "type": "string"
+        },
+        "number": {
+          "type": "long"
+        },
+        "numberVariant": {
+          "type": "string"
+        },
+        "subChapterName": {
+          "type": "string"
+        },
+        "variant": {
+          "type": "string"
+        }
+      }
+    },
+    "exercises_suggest": {
+      "properties": {
+        "exercises_suggest": {
+          "type": "completion",
+          "analyzer": "simple",
+          "payloads": false,
+          "preserve_separators": true,
+          "preserve_position_increments": true,
+          "max_input_length": 50
+        },
+        "word": {
+          "type": "string"
+        }
+      }
+    },
+    "lessons_suggest": {
+      "properties": {
+        "lessons_suggest": {
+          "type": "completion",
+          "analyzer": "simple",
+          "payloads": false,
+          "preserve_separators": true,
+          "preserve_position_increments": true,
+          "max_input_length": 50
+        },
+        "word": {
+          "type": "string"
+        }
+      }
+    },
+    "lessons": {
+      "properties": {
+        "centralArea": {
+          "type": "string"
+        },
+        "keywords": {
+          "type": "string"
+        },
+        "lessonId": {
+          "type": "string",
+          "include_in_all": false
+        },
+        "lessonName": {
+          "type": "string"
+        },
+        "mainArea": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

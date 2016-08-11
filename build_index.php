@@ -14,16 +14,6 @@ $client = $clientBuilder->build();
 $params = [
     'index' => $indexName,
     'body' => [
-//        'settings' => [
-//            'analysis' => [
-//                'analyzer' => [
-//                    'my_analyzer' => [
-//                        'type' => 'snowball',
-//                        'language' => 'Swedish'
-//                    ]
-//                ]
-//            ],
-//        ],
         'mappings' => [
             'lessons' => [
                 'properties' => [
@@ -82,11 +72,9 @@ $params = [
                     ],
                     'chapterName' => [
                         'type' => 'string',
-//                        'analyzer' => 'my_analyzer'
                     ],
                     'exerciseText' => [
                         'type' => 'string',
-//                        'analyzer' => 'my_analyzer'
                     ],
                     'lessonId' => [
                         'type' => 'string',
@@ -113,11 +101,9 @@ $params = [
                     ],
                     'subChapterName' => [
                         'type' => 'string',
-//                        'analyzer' => 'my_analyzer'
                     ],
                     'variant' => [
                         'type' => 'string',
-//                        'boost' => 2
                     ],
                     'numVarChaptSubChapt' => [
                         'type' => 'string'
