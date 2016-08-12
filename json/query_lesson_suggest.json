@@ -1,0 +1,11 @@
+/*
+  POST http://localhost:9200/mralbert/_suggest
+*/
+{
+  "lessons_suggest":{
+    "text":"strä",
+    "completion": {
+      "field" : "lessons_suggest"
+    }
+  }
+}

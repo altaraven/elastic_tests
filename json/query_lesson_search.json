@@ -1,0 +1,11 @@
+/*
+  POST http://localhost:9200/mralbert/lessons/_search
+*/
+{
+  "min_score": 1.0,
+  "query": {
+    "match": {
+      "_all": "Olika"
+    }
+  }
+}

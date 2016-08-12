@@ -1,0 +1,11 @@
+/*
+  POST http://localhost:9200/mralbert/_suggest
+*/
+{
+  "exercises_suggest":{
+    "text":"bo",
+    "completion": {
+      "field" : "exercises_suggest"
+    }
+  }
+}
