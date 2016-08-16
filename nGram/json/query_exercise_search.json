@@ -1,5 +1,5 @@
 /*
-  POST http://localhost:9200/mralbert/exercises/_search
+  POST http://localhost:9200/mralbert_ngram/exercises/_search
 */
 {
   "sort": {
