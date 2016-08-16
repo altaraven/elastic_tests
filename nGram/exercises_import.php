@@ -11,7 +11,7 @@ $client = $clientBuilder->build();
 
 $filePath = __DIR__ . '/../data/sample_exercises.xlsx';
 
-$indexName = 'mralbert_ngram_3';
+$indexName = 'mralbert_ngram_10';
 $typeName = 'exercises';
 
 try {

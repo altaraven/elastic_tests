@@ -3,7 +3,7 @@ date_default_timezone_set('Europe/Kiev');
 
 require(__DIR__ . '/../vendor/autoload.php');
 
-$indexName = 'mralbert_ngram_3';
+$indexName = 'mralbert_ngram_10';
 
 $clientBuilder = Elasticsearch\ClientBuilder::create();
 $clientBuilder->setHosts([
@@ -19,7 +19,7 @@ $params = [
                 'filter' => [
                     'nGram_filter' => [
                         'type' => 'nGram',
-                        'min_gram' => 2,
+                        'min_gram' => 1,
                         'max_gram' => 20,
                         'token_chars' => [
                             'letter',
@@ -55,7 +55,7 @@ $params = [
                 '_all' => [
                     'analyzer' => 'nGram_analyzer',
                     'search_analyzer' => 'whitespace_analyzer',
-//                    'store' => true,
+                    'store' => true,
                 ],
                 'properties' => [
                     'id' => [
@@ -81,7 +81,7 @@ $params = [
                 '_all' => [
                     'analyzer' => 'nGram_analyzer',
                     'search_analyzer' => 'whitespace_analyzer',
-//                    'store' => true,
+                    'store' => true,
                 ],
                 'properties' => [
                     'isbn' => [
@@ -110,24 +110,30 @@ $params = [
                     ],
                     'number' => [
                         'type' => 'long',
+//                        'boost' => 2,
                     ],
                     'numberVariant' => [
                         'type' => 'string',
+//                        'boost' => 10,
                     ],
                     'exerciseNumberVariant1' => [
                         'type' => 'string',
+//                        'boost' => 2,
                     ],
                     'exerciseNumberVariant2' => [
                         'type' => 'string',
+//                        'boost' => 2,
                     ],
                     'exerciseNumberVariant3' => [
                         'type' => 'string',
+//                        'boost' => 2,
                     ],
                     'subChapterName' => [
                         'type' => 'string',
                     ],
                     'variant' => [
                         'type' => 'string',
+//                        'boost' => 2,
                     ],
                     'numVarChaptSubChapt' => [
                         'type' => 'string'
