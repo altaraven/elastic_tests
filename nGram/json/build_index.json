@@ -41,7 +41,7 @@
   "mappings": {
     "exercises": {
       "_all": {
-        "index_analyzer": "nGram_analyzer",
+        "analyzer": "nGram_analyzer",
         "search_analyzer": "whitespace_analyzer"
       },
       "properties": {
@@ -97,7 +97,7 @@
     },
     "lessons": {
       "_all": {
-        "index_analyzer": "nGram_analyzer",
+        "analyzer": "nGram_analyzer",
         "search_analyzer": "whitespace_analyzer"
       },
       "properties": {
