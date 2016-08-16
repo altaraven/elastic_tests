@@ -1,0 +1,18 @@
+/*
+  POST http://localhost:9200/mralbert/exercises/_search
+*/
+{
+  "sort": {
+    "chapterNumber": "asc",
+    "subChapterName": "asc",
+    "number": "asc",
+    "variant": "asc"
+
+  },
+  "min_score": 1.0,
+  "query": {
+    "match": {
+      "_all" : "11 är"
+    }
+  }
+}

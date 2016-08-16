@@ -55,7 +55,7 @@ $params = [
                 '_all' => [
                     'analyzer' => 'nGram_analyzer',
                     'search_analyzer' => 'whitespace_analyzer',
-                    'store' => true,
+//                    'store' => true,
                 ],
                 'properties' => [
                     'id' => [
@@ -81,7 +81,7 @@ $params = [
                 '_all' => [
                     'analyzer' => 'nGram_analyzer',
                     'search_analyzer' => 'whitespace_analyzer',
-                    'store' => true,
+//                    'store' => true,
                 ],
                 'properties' => [
                     'isbn' => [

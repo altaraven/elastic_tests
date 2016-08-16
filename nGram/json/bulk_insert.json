@@ -1,0 +1,10 @@
+/*
+  POST http://localhost:9200/_bulk
+*/
+
+{"index": {"_index": "mralbert", "_type": "exercises", "_id": "9789152302484-1-x1_3x-B-11c"}}
+{"isbn": "9789152302484", "chapterNumber": "Kapitel 1", "chapterName": "Tal", "subChapterName": "Blå kurs", "number": "11", "variant": "c", "numberVariant": "11c", "exerciseNumberVariant1": "tal 11 c", "exerciseNumberVariant2": "uppgift 11 c", "exerciseNumberVariant3": "övning 11 c", "exerciseText": "Beräkna $(-10) + 5$", "numVarChaptSubChapt": "11c Tal Blå kurs", "lessonId": "1_2_6", "lessonName": "Bråk - Andelen av något"}
+{"index": {"_index": "mralbert", "_type": "exercises", "_id": "9789152302484-1-x1_1x-G-11c"}}
+{"isbn": "9789152302484", "chapterNumber": "Kapitel 1", "chapterName": "Tal", "subChapterName": "Grundkurs", "number": "11", "variant": "c", "numberVariant": "11c", "exerciseNumberVariant1": "tal 11 c", "exerciseNumberVariant2": "uppgift 11 c", "exerciseNumberVariant3": "övning 11 c", "exerciseText": "Vilka tal är 18 delbart med?", "numVarChaptSubChapt": "11c Tal Grundkurs", "lessonId": "3_1_1", "lessonName": "Sannolikhetslära - Beroende händelser"}
+{"index": {"_index": "mralbert", "_type": "exercises", "_id": "9789152302484-1-x1_1x-G-20c"}}
+{"isbn": "9789152302484", "chapterNumber": "Kapitel 1", "chapterName": "Tal", "subChapterName": "Grundkurs", "number": "20", "variant": "c", "numberVariant": "20c", "exerciseNumberVariant1": "tal 20 c", "exerciseNumberVariant2": "uppgift 20 c", "exerciseNumberVariant3": "övning 20 c", "exerciseText": "Vilket tal ska stå i stället för $x$? $(-5) - x = 11$", "numVarChaptSubChapt": "20c Tal Grundkurs", "lessonId": "4_15_2", "lessonName": "Volym & olika sorters kroppar - Pyramid och kon"}

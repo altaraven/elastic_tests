@@ -1,0 +1,124 @@
+/*
+  POST http://localhost:9200/mralbert_ngram/
+*/
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "nGram_filter": {
+          "type": "nGram",
+          "min_gram": 1,
+          "max_gram": 20,
+          "token_chars": [
+            "letter",
+            "digit",
+            "punctuation",
+            "symbol"
+          ]
+        }
+      },
+      "analyzer": {
+        "nGram_analyzer": {
+          "type": "custom",
+          "tokenizer": "whitespace",
+          "filter": [
+            "lowercase",
+            "asciifolding",
+            "nGram_filter"
+          ]
+        },
+        "whitespace_analyzer": {
+          "type": "custom",
+          "tokenizer": "whitespace",
+          "filter": [
+            "lowercase",
+            "asciifolding"
+          ]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "exercises": {
+      "_all": {
+        "index_analyzer": "nGram_analyzer",
+        "search_analyzer": "whitespace_analyzer"
+      },
+      "properties": {
+        "chapterName": {
+          "type": "string"
+        },
+        "chapterNumber": {
+          "type": "string"
+        },
+        "exerciseNumberVariant1": {
+          "type": "string"
+        },
+        "exerciseNumberVariant2": {
+          "type": "string"
+        },
+        "exerciseNumberVariant3": {
+          "type": "string"
+        },
+        "exerciseText": {
+          "type": "string"
+        },
+        "isbn": {
+          "type": "string",
+          "index": "no",
+          "include_in_all": false
+        },
+        "lessonId": {
+          "type": "string",
+          "index": "no",
+          "include_in_all": false
+        },
+        "lessonName": {
+          "type": "string",
+          "index": "no",
+          "include_in_all": false
+        },
+        "numVarChaptSubChapt": {
+          "type": "string"
+        },
+        "number": {
+          "type": "long"
+        },
+        "numberVariant": {
+          "type": "string"
+        },
+        "subChapterName": {
+          "type": "string"
+        },
+        "variant": {
+          "type": "string"
+        }
+      }
+    },
+    "lessons": {
+      "_all": {
+        "index_analyzer": "nGram_analyzer",
+        "search_analyzer": "whitespace_analyzer"
+      },
+      "properties": {
+        "centralArea": {
+          "type": "string"
+        },
+        "keywords": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "index": "no",
+          "include_in_all": false
+        },
+        "name": {
+          "type": "string"
+        },
+        "mainArea": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
